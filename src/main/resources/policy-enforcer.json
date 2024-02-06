@@ -1,0 +1,15 @@
+{
+  "realm": "dive-dev",
+  "auth-server-url": "http://localhost:8080",
+  "resource": "springboot-be",
+  "credentials": {
+    "secret": "orvHlYN84oiweTjtGYHMRxvhAxBbIGTS"
+  },
+  "http-method-as-scope": true,
+  "paths": [
+    {
+      "path": "/api/v1",
+      "enforcement-mode": "DISABLED"
+    }
+  ]
+}
