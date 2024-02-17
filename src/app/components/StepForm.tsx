@@ -9,18 +9,22 @@ import {
   Select,
   DatePicker,
   Space,
+  InputNumber,
 } from "antd";
 import { Store } from "rc-field-form/lib/interface";
 import {
   LockOutlined,
   MailOutlined,
   MinusCircleOutlined,
+  PhoneOutlined,
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import theme from "../Theme/themeConfig";
 import PhoneInput from "antd-phone-input";
 import AddSchoolComp from "./AddSchoolComp";
+import axios from "axios";
+import { AnyAaaaRecord } from "dns";
 
 const { Step } = Steps;
 
@@ -209,11 +213,17 @@ const MultiStepForm: React.FC = () => {
               hasFeedback
               validateTrigger="onBlur"
               rules={[
-                { required: true, message: "Please Phone number is required!" },
+                {
+                  required: true,
+                  message: "Please Phone number is required!",
+                },
               ]}
             >
-              <PhoneInput enableSearch />
+              <Input
+                prefix={<PhoneOutlined className="site-form-item-icon" />}
+              />
             </Form.Item>
+
             <Form.Item
               name="address"
               label="Digital Address"
@@ -313,11 +323,15 @@ const MultiStepForm: React.FC = () => {
               rules={[
                 {
                   required: true,
+
                   message: "Please telephone number is required!",
                 },
               ]}
             >
-              <PhoneInput enableSearch />
+              {/* <PhoneInput enableSearch /> */}
+              <Input
+                prefix={<PhoneOutlined className="site-form-item-icon" />}
+              />
             </Form.Item>
           </div>
         </ConfigProvider>
@@ -344,40 +358,83 @@ const MultiStepForm: React.FC = () => {
     setCurrentStep(currentStep - 1);
   };
 
+  interface School {
+    schoolName: string;
+    StartDate: string;
+    EndDate: string;
+  }
+
+  interface Data {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    password: string;
+    confirm: string;
+    gender: string;
+    phone: any;
+    address: string;
+    permanent_address: string;
+    fullName: string;
+    telephoneNumber: any;
+    regions: string;
+    school: School[];
+  }
+
+  interface Attributes {
+    firstname: string;
+    lastname: string;
+    email: string;
+    userName: string;
+    password: string;
+    attributes: {
+      School: School[];
+      gender: string;
+      regions: string;
+      address: string;
+      phone: number;
+      telephoneNumber: number;
+      permanent_address: string;
+      fullName: string;
+    };
+  }
+
+  function transformData(data: Data): Attributes {
+    return {
+      firstname: data.firstName,
+      lastname: data.lastName,
+      email: data.email,
+      userName: data.username,
+      password: data.password,
+      attributes: {
+        School: data.school,
+        gender: data.gender,
+        regions: data.regions,
+        phone: data.phone,
+        telephoneNumber: data.telephoneNumber,
+        address: data.address,
+        permanent_address: data.permanent_address,
+        fullName: data.fullName,
+      },
+    };
+  }
+
+  const postData = async (data: any) => {
+    try {
+      const url = "";
+      const response = await axios.post(url, data);
+      console.log("Response after save:", response.data);
+    } catch (error) {
+      console.error("Error while saving:", error);
+    }
+  };
+
   const onFinish = (values: Store) => {
-    // const formData = form.getFieldsValue(true);
-    // delete formData.phone.countryCode;
-    // delete formData.phone.areaCode;
-    // delete formData.phone.isoCode;
-    // formData.phone = formData.phone.phoneNumber;
-    // delete formData.phone.phoneNumber;
-
-    // delete formData.telephoneNumber.countryCode;
-    // delete formData.telephoneNumber.areaCode;
-    // delete formData.telephoneNumber.isoCode;
-    // formData.telephoneNumber = formData.telephoneNumber.phoneNumber;
-    // delete formData.telephoneNumber.phoneNumber;
-
     const formData = { ...form.getFieldsValue(true) };
-
-    // Restructure "phone" field
-    // formData.phone = `${formData.phone.countryCode}${formData.phone.areaCode}${formData.phone.phoneNumber}`;
-
-    // Restructure "telephoneNumber" field
-    // formData.telephoneNumber = formData.telephoneNumber.phoneNumber;
-
-    // Remove unnecessary fields
-    // ["countryCode", "areaCode", "isoCode"].forEach((field) => {
-    //   delete formData.phone[field];
-    //   delete formData.telephoneNumber[field];
-    // });
-
-    // Remove "phoneNumber" field
-    // delete formData.phone.phoneNumber;
-    // delete formData.telephoneNumber.phoneNumber;
-
-    
-    console.log("All input values:", formData);
+    const transformedData: Attributes = transformData(formData);
+    postData(transformedData);
+    console.log("All input values:", transformedData);
   };
 
   return (
