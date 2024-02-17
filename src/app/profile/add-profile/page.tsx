@@ -98,7 +98,7 @@ const AddProfile = () => {
               {uploadButton}
             </Upload>
             <Modal
-              // open={previewOpen}
+              open={previewOpen}
               // title={previewTitle}
               // footer={null}
               onCancel={handleCancel}
