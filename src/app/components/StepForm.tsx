@@ -390,13 +390,13 @@ const MultiStepForm: React.FC = () => {
     password: string;
     attributes: {
       School: School[];
-      gender: string;
-      regions: string;
-      address: string;
-      phone: number;
-      telephoneNumber: number;
-      permanent_address: string;
-      fullName: string;
+      gender: string[];
+      regions: string[];
+      address: string[];
+      phone: number[];
+      telephoneNumber: number[];
+      permanent_address: string[];
+      fullName: string[];
     };
   }
 
@@ -409,20 +409,20 @@ const MultiStepForm: React.FC = () => {
       password: data.password,
       attributes: {
         School: data.school,
-        gender: data.gender,
-        regions: data.regions,
-        phone: data.phone,
-        telephoneNumber: data.telephoneNumber,
-        address: data.address,
-        permanent_address: data.permanent_address,
-        fullName: data.fullName,
+        gender: [data.gender],
+        regions: [data.regions],
+        phone: [data.phone],
+        telephoneNumber: [data.telephoneNumber],
+        address: [data.address],
+        permanent_address: [data.permanent_address],
+        fullName: [data.fullName],
       },
     };
   }
 
   const postData = async (data: any) => {
     try {
-      const url = "";
+      const url = "localhost:8081/keycloak/user";
       const response = await axios.post(url, data);
       console.log("Response after save:", response.data);
     } catch (error) {
@@ -430,15 +430,22 @@ const MultiStepForm: React.FC = () => {
     }
   };
 
-  const onFinish = (values: Store) => {
+  const handleSub = async (values: Store) => {
     const formData = { ...form.getFieldsValue(true) };
     const transformedData: Attributes = transformData(formData);
-    postData(transformedData);
+    try {
+      const url = "localhost:8081/keycloak/user";
+      const response = await axios.post(url, transformedData);
+      console.log("Response after save:", response.data);
+    } catch (error) {
+      console.error("Error while saving:", error);
+    }
+    // postData(transformedData);
     console.log("All input values:", transformedData);
   };
 
   return (
-    <Form form={form} onFinish={onFinish} layout="vertical">
+    <Form form={form} onFinish={handleSub} layout="vertical">
       <ConfigProvider theme={theme}>
         <Steps current={currentStep}>
           {steps.map((step, index) => (
