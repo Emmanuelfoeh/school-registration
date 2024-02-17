@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.6
+    container_name: keycloak
+    command: start-dev
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak # Updated URL to point to the PostgreSQL service
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=admin
+      - KC_HOSTNAME=localhost
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - keycloak_network # Assign to the custom network
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432" # PostgreSQL default port
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    networks:
+      - keycloak_network # Assign to the custom network
+networks:
+  keycloak_network:
+    name: keycloak_network
+    driver: bridge # Use the bridge driver for the network

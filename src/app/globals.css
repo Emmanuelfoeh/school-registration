@@ -8,7 +8,7 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
@@ -18,10 +18,42 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+.tryMain {
+  display: grid;
+  grid-template-columns: 20% 1fr 1fr;
+  grid-template-rows: 3rem 1fr;
+  grid-template-areas:
+    "sidebar nav nav"
+    "sidebar mainCont mainCont"
+    "sidebar mainCont mainCont";
+  /* grid-template-rows: 1fr 1fr; */
+}
+
+.sidebar {
+  color: red;
+  grid-area: sidebar;
+  position: fixed;
+  z-index: 10;
+  height: 100%;
+  width: 20%;
+  /* width: 20%; */
+}
+
+.navbar {
+  color: blue;
+  position: sticky;
+  top: 0;
+  /* left: 18rem; */
+  /* width: 80%; */
+  z-index: 100;
+  /* height: 20rem; */
+  grid-area: nav;
+}
+
+.mainCont {
+  color: gray;
+  grid-area: mainCont;
+  /* overflow-y: scroll; */
 }

@@ -1,0 +1,18 @@
+.home_layout {
+  /* display: grid;
+  grid-template-columns: 16rem 1fr; */
+  /* background-color: aquamarine; */
+  /* column-gap: 2rem; */
+}
+
+._ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  color: white;
+  font-weight: 600;
+  /* background-color: blue; */
+  padding-block: 1rem;
+  padding-inline: 1rem;
+  margin-inline: 1rem 0;
+}
